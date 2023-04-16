@@ -37,7 +37,7 @@ export async function logout() {
         .catch(console.error);
 }
 
-export function onUserStateChnage(callback: any) {
+export function onUserStateChange(callback: any) {
     onAuthStateChanged(auth, async (user) => {
         const updatedUser = user ? await adminUser(user) : null;
         callback(updatedUser);

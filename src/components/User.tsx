@@ -1,4 +1,4 @@
-import { UserState } from '../store/slice/user';
+import { UserState } from '../store/slice/userSlice';
 
 type Props = {
     user: UserState;

@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
 import { FiShoppingBag } from 'react-icons/fi';
 import { BsFillPencilFill } from 'react-icons/bs';
-import { login, logout, onUserStateChnage } from '../api/firebase';
+import { login, logout, onUserStateChange } from '../api/firebase';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/store';
-import { UserState, setUser } from '../store/slice/user';
+import { UserState, setUser } from '../store/slice/userSlice';
 import { useEffect } from 'react';
 import User from './User';
 import Button from './ui/Button';
@@ -13,7 +13,7 @@ export default function Navbar() {
     const dispatch = useDispatch();
     const user = useSelector((state: RootState) => state.user);
     useEffect(() => {
-        onUserStateChnage((user: UserState) => {
+        onUserStateChange((user: UserState) => {
             dispatch(
                 setUser({
                     displayName: user?.displayName,
