@@ -7,6 +7,7 @@ import { RootState } from '../store/store';
 import { UserState, setUser } from '../store/slice/user';
 import { useEffect } from 'react';
 import User from './User';
+import Button from './ui/Button';
 
 export default function Navbar() {
     const dispatch = useDispatch();
@@ -15,10 +16,10 @@ export default function Navbar() {
         onUserStateChnage((user: UserState) => {
             dispatch(
                 setUser({
-                    displayName: user.displayName,
-                    uid: user.uid,
-                    photoURL: user.photoURL,
-                    isAdmin: user.isAdmin,
+                    displayName: user?.displayName,
+                    uid: user?.uid,
+                    photoURL: user?.photoURL,
+                    isAdmin: user?.isAdmin,
                 })
             );
         });
@@ -33,14 +34,14 @@ export default function Navbar() {
             <nav className='flex items-center gap-4 font-semibold'>
                 <Link to='/products'>Products</Link>
                 <Link to='/carts'>Carts</Link>
-
-                <Link to='/products/new' className='text-2xl'>
-                    <BsFillPencilFill />
-                </Link>
-
+                {user && user.isAdmin && (
+                    <Link to='/products/new' className='text-2xl'>
+                        <BsFillPencilFill />
+                    </Link>
+                )}
                 {user.displayName && <User user={user} />}
-                {!user.displayName && <button onClick={login}>Login</button>}
-                {user.displayName && <button onClick={logout}>Logout</button>}
+                {!user.displayName && <Button text='Login' onClick={login} />}
+                {user.displayName && <Button text='Logout' onClick={logout} />}
             </nav>
         </header>
     );
