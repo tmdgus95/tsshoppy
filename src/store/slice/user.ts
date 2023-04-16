@@ -7,6 +7,7 @@ export interface UserState {
     displayName: string;
     uid: string;
     photoURL: string;
+    isAdmin: boolean;
 }
 
 // Define the initial state using that type
@@ -14,6 +15,7 @@ const initialState: UserState = {
     displayName: '',
     uid: '',
     photoURL: '',
+    isAdmin: false,
 };
 
 export const userSlice = createSlice({

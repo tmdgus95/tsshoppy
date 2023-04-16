@@ -6,7 +6,7 @@ import {
     signOut,
     onAuthStateChanged,
 } from 'firebase/auth';
-
+import { getDatabase, ref, get } from 'firebase/database';
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
     authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -16,13 +16,16 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
+const database = getDatabase(app);
 const provider = new GoogleAuthProvider();
+provider.setCustomParameters({
+    prompt: 'select_account',
+});
 
 export async function login() {
     return signInWithPopup(auth, provider)
         .then((result) => {
             const user = result.user;
-            console.log(user);
             return user;
         })
         .catch(console.error);
@@ -35,7 +38,27 @@ export async function logout() {
 }
 
 export function onUserStateChnage(callback: any) {
-    onAuthStateChanged(auth, (user) => {
-        callback(user);
+    onAuthStateChanged(auth, async (user) => {
+        const updatedUser = user ? await adminUser(user) : null;
+        console.log(updatedUser);
+
+        callback(updatedUser);
+    });
+}
+
+// type FireUser = {
+//     displayName: string;
+//     uid: string;
+//     photoURL: string;
+// };
+
+async function adminUser(user: any) {
+    return get(ref(database, 'admins')).then((snapshot) => {
+        if (snapshot.exists()) {
+            const admins = snapshot.val();
+            const isAdmin = admins.includes(user.uid);
+            return { ...user, isAdmin };
+        }
+        return user;
     });
 }
