@@ -1,6 +1,7 @@
 import { ChangeEvent, useState } from 'react';
 import Button from '../components/ui/Button';
 import { uploadImage } from '../api/uploader';
+import { addNewProduct } from '../api/firebase';
 
 export default function NewProduct() {
     const [product, setProduct] = useState({
@@ -24,6 +25,7 @@ export default function NewProduct() {
         uploadImage(file) //
             .then((url) => {
                 console.log(url);
+                addNewProduct(product, url);
             });
     };
     return (
@@ -54,7 +56,7 @@ export default function NewProduct() {
                     onChange={handleChange}
                 />
                 <input
-                    type='number'
+                    type='text'
                     name='category'
                     value={product.category ?? ''}
                     placeholder='카테고리'
@@ -62,7 +64,7 @@ export default function NewProduct() {
                     onChange={handleChange}
                 />
                 <input
-                    type='number'
+                    type='text'
                     name='description'
                     value={product.description ?? ''}
                     placeholder='제품 설명'
@@ -70,7 +72,7 @@ export default function NewProduct() {
                     onChange={handleChange}
                 />
                 <input
-                    type='number'
+                    type='text'
                     name='options'
                     value={product.options ?? ''}
                     placeholder='옵션들(콤마(,)로 구분)'
