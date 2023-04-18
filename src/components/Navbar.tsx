@@ -12,6 +12,7 @@ import Button from './ui/Button';
 export default function Navbar() {
     const dispatch = useDispatch();
     const user = useSelector((state: RootState) => state.user);
+
     useEffect(() => {
         onUserStateChange((user: UserState) => {
             dispatch(
@@ -23,6 +24,7 @@ export default function Navbar() {
                 })
             );
         });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
