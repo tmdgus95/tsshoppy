@@ -8,6 +8,7 @@ import {
     onAuthStateChanged,
 } from 'firebase/auth';
 import { getDatabase, ref, get, set } from 'firebase/database';
+import { Product } from '../components/Products';
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
     authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -71,5 +72,14 @@ export async function addNewProduct(product: NewProduct, image: string) {
         price: parseInt(product.price),
         image,
         options: product.options.split(','),
+    });
+}
+
+export async function getProducts(): Promise<Product[]> {
+    return get(ref(database, 'products')).then((snapshot) => {
+        if (snapshot.exists()) {
+            return Object.values(snapshot.val());
+        }
+        return [];
     });
 }
