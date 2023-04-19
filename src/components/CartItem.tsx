@@ -1,14 +1,10 @@
-import {
-    CartProduct,
-    addOrUpdatedToCart,
-    removeFromCart,
-} from '../api/firebase';
+import { CartProduct } from '../api/firebase';
 import { AiOutlineMinusSquare, AiOutlinePlusSquare } from 'react-icons/ai';
 import { RiDeleteBin5Fill } from 'react-icons/ri';
+import useCart from '../hooks/useCart';
 
 type Props = {
     product: CartProduct;
-    uid: string;
 };
 
 const ICON_CLASS =
@@ -16,15 +12,15 @@ const ICON_CLASS =
 export default function CartItem({
     product,
     product: { id, image, title, option, quantitiy, price },
-    uid,
 }: Props) {
+    const { addOrUpdateItem, removeItem } = useCart();
     const handleMinus = () => {
         if (quantitiy < 2) return;
-        addOrUpdatedToCart(uid, { ...product, quantitiy: quantitiy - 1 });
+        addOrUpdateItem.mutate({ ...product, quantitiy: quantitiy - 1 });
     };
     const handlePlus = () =>
-        addOrUpdatedToCart(uid, { ...product, quantitiy: quantitiy + 1 });
-    const handleDelete = () => removeFromCart(uid, id);
+        addOrUpdateItem.mutate({ ...product, quantitiy: quantitiy + 1 });
+    const handleDelete = () => removeItem.mutate(id);
     return (
         <li className='flex justify-between my-2 items-center'>
             <img className='w-24 md:w-48 rounded-lg' src={image} alt={title} />

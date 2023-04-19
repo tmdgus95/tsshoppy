@@ -1,13 +1,10 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Button from '../components/ui/Button';
-import { RootState } from '../store/store';
-import { useSelector } from 'react-redux';
-import { addOrUpdatedToCart } from '../api/firebase';
+import useCart from '../hooks/useCart';
 
 export default function ProductDetail() {
-    const { uid } = useSelector((state: RootState) => state.user);
-
+    const { addOrUpdateItem } = useCart();
     const {
         state: {
             product: {
@@ -21,6 +18,7 @@ export default function ProductDetail() {
             },
         },
     } = useLocation();
+    const [success, setSuccess] = useState<string | null>('');
     const [selected, setSelected] = useState(options && options[0]);
     const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelected(e.target.value);
@@ -34,8 +32,16 @@ export default function ProductDetail() {
             option: selected,
             quantitiy: 1,
         };
-        addOrUpdatedToCart(uid, prodcut);
+        addOrUpdateItem.mutate(prodcut, {
+            onSuccess: () => {
+                setSuccess('성공적으로 제품이 추가되었습니다.');
+                setTimeout(() => {
+                    setSuccess(null);
+                }, 3000);
+            },
+        });
     };
+
     return (
         <>
             <p className='mx-12 mt-4 text-gray-700'>{category}</p>
@@ -70,6 +76,7 @@ export default function ProductDetail() {
                                 ))}
                         </select>
                     </div>
+                    {success && <p className='my-2'>✅{success}</p>}
                     <Button text='장바구니에 추가' onClick={handleClick} />
                 </div>
             </section>
