@@ -1,8 +1,13 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Button from '../components/ui/Button';
+import { RootState } from '../store/store';
+import { useSelector } from 'react-redux';
+import { addOrUpdatedToCart } from '../api/firebase';
 
 export default function ProductDetail() {
+    const { uid } = useSelector((state: RootState) => state.user);
+
     const {
         state: {
             product: {
@@ -20,7 +25,17 @@ export default function ProductDetail() {
     const handleSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelected(e.target.value);
     };
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {};
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        const prodcut = {
+            id,
+            image,
+            title,
+            price,
+            options: selected,
+            quantitiy: 1,
+        };
+        addOrUpdatedToCart(uid, prodcut);
+    };
     return (
         <>
             <p className='mx-12 mt-4 text-gray-700'>{category}</p>
