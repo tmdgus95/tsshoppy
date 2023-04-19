@@ -57,14 +57,14 @@ async function adminUser(user: any) {
     });
 }
 
-type NewProduct = {
+export type NewProductType = {
     title: string;
     price: string;
     category: string;
     description: string;
     options: string;
 };
-export async function addNewProduct(product: NewProduct, image: string) {
+export async function addNewProduct(product: NewProductType, image: string) {
     const id = uuid();
     return set(ref(database, `products/${id}`), {
         ...product,

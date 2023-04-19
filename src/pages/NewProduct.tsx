@@ -1,7 +1,17 @@
 import { ChangeEvent, useState } from 'react';
 import Button from '../components/ui/Button';
 import { uploadImage } from '../api/uploader';
-import { addNewProduct } from '../api/firebase';
+import { NewProductType, addNewProduct } from '../api/firebase';
+import {
+    QueryClient,
+    useMutation,
+    useQueryClient,
+} from '@tanstack/react-query';
+
+type MutationProps = {
+    product: NewProductType;
+    url: string;
+};
 
 export default function NewProduct() {
     const [product, setProduct] = useState({
@@ -14,6 +24,13 @@ export default function NewProduct() {
     const [file, setFile] = useState<File | undefined>();
     const [isUploading, setIsUploading] = useState(false);
     const [success, setSuccess] = useState('');
+
+    const queryClient = useQueryClient();
+    const addProduct = useMutation(
+        ({ product, url }: MutationProps) => addNewProduct(product, url),
+        { onSuccess: () => queryClient.invalidateQueries(['products']) }
+    );
+
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value, files } = e.target;
         if (name === 'file' && files && files.length > 0) {
@@ -22,21 +39,27 @@ export default function NewProduct() {
         }
         setProduct((product) => ({ ...product, [name]: value }));
     };
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setIsUploading(true);
         uploadImage(file) //
             .then((url) => {
-                console.log(url);
-                addNewProduct(product, url).then(() => {
-                    setSuccess('성공적으로 제품이 추가되었습니다.');
-                    setTimeout(() => {
-                        setSuccess('');
-                    }, 4000);
-                });
+                addProduct.mutate(
+                    { product, url },
+                    {
+                        onSuccess: () => {
+                            setSuccess('성공적으로 제품이 추가되었습니다.');
+                            setTimeout(() => {
+                                setSuccess('');
+                            }, 4000);
+                        },
+                    }
+                );
             })
             .finally(() => setIsUploading(false));
     };
+
     return (
         <section className='w-full text-center '>
             <h2 className='text-2xl font-bold my-4'>새로운 제품 등록</h2>
