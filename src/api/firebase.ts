@@ -84,20 +84,22 @@ export async function getProducts(): Promise<Product[]> {
     });
 }
 
-export async function getCart(userId: string) {
+export type CartProduct = {
+    id: string;
+    image: string;
+    title: string;
+    price: number;
+    option: string;
+    quantitiy: number;
+};
+
+export async function getCart(userId: string): Promise<CartProduct[]> {
     return get(ref(database, `carts/${userId}`)).then((snapshot) => {
         const items = snapshot.val() || {};
         return Object.values(items);
     });
 }
-type CartProduct = {
-    id: string;
-    image: string;
-    title: string;
-    price: number;
-    options: string;
-    quantitiy: number;
-};
+
 export async function addOrUpdatedToCart(userId: string, product: CartProduct) {
     return set(ref(database, `carts/${userId}/${product.id}`), product);
 }

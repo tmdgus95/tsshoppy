@@ -31,7 +31,7 @@ export default function ProductDetail() {
             image,
             title,
             price,
-            options: selected,
+            option: selected,
             quantitiy: 1,
         };
         addOrUpdatedToCart(uid, prodcut);
