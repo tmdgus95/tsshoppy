@@ -1,6 +1,5 @@
-import { useQuery } from '@tanstack/react-query';
-import { getProducts } from '../api/firebase';
 import ProductCard from './ProductCard';
+import useProducdts from '../hooks/useProducts';
 
 export type Product = {
     category: string;
@@ -14,11 +13,8 @@ export type Product = {
 
 export default function Products() {
     const {
-        isLoading,
-        error,
-        data: products,
-    } = useQuery(['products'], getProducts);
-
+        ProductsQuery: { isLoading, error, data: products },
+    } = useProducdts();
     return (
         <>
             {isLoading && <p>로딩중...</p>}

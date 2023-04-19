@@ -1,17 +1,7 @@
 import { ChangeEvent, useState } from 'react';
 import Button from '../components/ui/Button';
 import { uploadImage } from '../api/uploader';
-import { NewProductType, addNewProduct } from '../api/firebase';
-import {
-    QueryClient,
-    useMutation,
-    useQueryClient,
-} from '@tanstack/react-query';
-
-type MutationProps = {
-    product: NewProductType;
-    url: string;
-};
+import useProducdts from '../hooks/useProducts';
 
 export default function NewProduct() {
     const [product, setProduct] = useState({
@@ -24,12 +14,7 @@ export default function NewProduct() {
     const [file, setFile] = useState<File | undefined>();
     const [isUploading, setIsUploading] = useState(false);
     const [success, setSuccess] = useState('');
-
-    const queryClient = useQueryClient();
-    const addProduct = useMutation(
-        ({ product, url }: MutationProps) => addNewProduct(product, url),
-        { onSuccess: () => queryClient.invalidateQueries(['products']) }
-    );
+    const { addProduct } = useProducdts();
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value, files } = e.target;
