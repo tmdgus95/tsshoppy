@@ -147,7 +147,8 @@ export async function getProducts(): Promise<Product[]> {
 
 ### ⚔️리덕스 툴킷이 꼭 써야 하나?
 
--   규모가 있거나 복잡한 프로젝트를 접한 적이 없어서 contextApi로도 충분하거나 없어도 별문제 없었지만 이번에 연습 삼아 한번 사용해 보았는데 커스텀훅을 만들어서 사용할 때는 깔끔해졌지만 그냥 사용할 때는 상당히 코드의 가독성이 떨어졌다.
+-   규모가 있거나 복잡한 프로젝트를 접한 적이 없어서 contextApi로 전역 상태를 관리 해왔습니다.
+-   리덕스 툴킷에 익숙해지기 위해 사용해 보았는데 커스텀 훅을 만들어서 사용할 때는 깔끔해졌지만 그냥 사용할 때는 똑같은 데이터를 여러 곳에서 새로 불러와서 사용해야 해서 상당히 지저분했습니다.
 
 ```
 /// 훅 사용후
@@ -156,19 +157,6 @@ import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Button from '../components/ui/Button';
 
-const { addOrUpdateItem } = useCart();
-
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        const prodcut = {
-            id,
-            image,
-            title,
-            price,
-            option: selected,
-            quantitiy: 1,
-        };
-        addOrUpdatedToCart(uid, prodcut);
-    };
 
 /// 훅 사용전
 
@@ -179,24 +167,4 @@ import { RootState } from '../store/store';
 import { useSelector } from 'react-redux';
 import { addOrUpdatedToCart } from '../api/firebase';
 
-const { uid } = useSelector((state: RootState) => state.user);
-
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        const prodcut = {
-            id,
-            image,
-            title,
-            price,
-            option: selected,
-            quantitiy: 1,
-        };
-        addOrUpdateItem.mutate(prodcut, {
-            onSuccess: () => {
-                setSuccess('성공적으로 제품이 추가되었습니다.');
-                setTimeout(() => {
-                    setSuccess(null);
-                }, 3000);
-            },
-        });
-    };
 ```
