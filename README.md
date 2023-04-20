@@ -45,13 +45,14 @@ $ npm start or yarn start
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Redux](https://img.shields.io/badge/Redux-764ABC?style=for-the-badge&logo=Redux&logoColor=61DAFB)
 ![ReactQuery](https://img.shields.io/badge/ReactQuery-FF4154?style=for-the-badge&logo=ReactQuery&logoColor=61DAFB)
+![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=Firebase&logoColor=ffffff)
 
 ## 화면 구성 🖥️
 
-|                             메인 페이지                              |                                구글 로그인                                |
-| :------------------------------------------------------------------: | :-----------------------------------------------------------------------: |
-|     <img width="329" src="https://user-images.githubusercontent.com/118142479/233291301-01c1aee0-bee0-4749-8c24-29fc70d48d01.gif"/>      |       <img width="329" src="https://user-images.githubusercontent.com/118142479/233291105-d3ca5e3a-aa03-4b0e-94b5-d9f42cac71dc.gif"/>       |
-|                           장바구니 페이지                            |                            제품 디테일 페이지                             |
+|                                                           메인 페이지                                                           |                                                           구글 로그인                                                           |
+| :-----------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------: |
+| <img width="329" src="https://user-images.githubusercontent.com/118142479/233291301-01c1aee0-bee0-4749-8c24-29fc70d48d01.gif"/> | <img width="329" src="https://user-images.githubusercontent.com/118142479/233291105-d3ca5e3a-aa03-4b0e-94b5-d9f42cac71dc.gif"/> |
+|                                                         장바구니 페이지                                                         |                                                       제품 디테일 페이지                                                        |
 | <img width="329" src="https://user-images.githubusercontent.com/118142479/233291307-7e6f173c-1ec9-4c70-a77f-a9979b56e3d7.gif"/> | <img width="329" src="https://user-images.githubusercontent.com/118142479/233291311-c3600d7b-72e0-4559-8704-4c0d87db1998.gif"/> |
 
 ## 주요 기능 📦
@@ -68,7 +69,7 @@ $ npm start or yarn start
 
 ## 프로젝트 후기
 
-### ♨️로그인 부터 문제
+### ♨️타입스크립트는 어려워!
 
 -   로그인을 하면 서버에서 응답으로 많은 데이터를 넘겨주지만 내가 사용하고 싶은 데이터가 몇 개 없음에도 불구하고 데이터에 타입을 지정해 줘야 한다고 해서 처음에는 막막했지만 일단 이번 프로젝트에서 필요한 데이터에만 타입을 지정해둠 유저 관련해서는 any를 쓰게 됨
 
@@ -142,4 +143,60 @@ export async function getProducts(): Promise<Product[]> {
         return [];
     });
 }
+```
+
+### ⚔️리덕스 툴킷이 꼭 써야 하나?
+
+-   규모가 있거나 복잡한 프로젝트를 접한 적이 없어서 contextApi로도 충분하거나 없어도 별문제 없었지만 이번에 연습 삼아 한번 사용해 보았는데 커스텀훅을 만들어서 사용할 때는 깔끔해졌지만 그냥 사용할 때는 상당히 코드의 가독성이 떨어졌다.
+
+```
+/// 훅 사용후
+
+import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import Button from '../components/ui/Button';
+
+const { addOrUpdateItem } = useCart();
+
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        const prodcut = {
+            id,
+            image,
+            title,
+            price,
+            option: selected,
+            quantitiy: 1,
+        };
+        addOrUpdatedToCart(uid, prodcut);
+    };
+
+/// 훅 사용전
+
+import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import Button from '../components/ui/Button';
+import { RootState } from '../store/store';
+import { useSelector } from 'react-redux';
+import { addOrUpdatedToCart } from '../api/firebase';
+
+const { uid } = useSelector((state: RootState) => state.user);
+
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        const prodcut = {
+            id,
+            image,
+            title,
+            price,
+            option: selected,
+            quantitiy: 1,
+        };
+        addOrUpdateItem.mutate(prodcut, {
+            onSuccess: () => {
+                setSuccess('성공적으로 제품이 추가되었습니다.');
+                setTimeout(() => {
+                    setSuccess(null);
+                }, 3000);
+            },
+        });
+    };
 ```
