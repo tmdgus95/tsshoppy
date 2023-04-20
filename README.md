@@ -50,9 +50,9 @@ $ npm start or yarn start
 
 |                             메인 페이지                              |                                구글 로그인                                |
 | :------------------------------------------------------------------: | :-----------------------------------------------------------------------: |
-|     <img width="329" src="/public/images/README/메인화면.png"/>      |       <img width="329" src="/public/images/README/소셜로그인.png"/>       |
+|     <img width="329" src="https://user-images.githubusercontent.com/118142479/233291301-01c1aee0-bee0-4749-8c24-29fc70d48d01.gif"/>      |       <img width="329" src="https://user-images.githubusercontent.com/118142479/233291105-d3ca5e3a-aa03-4b0e-94b5-d9f42cac71dc.gif"/>       |
 |                           장바구니 페이지                            |                            제품 디테일 페이지                             |
-| <img width="329" src="/public/images/README/장바구니%20페이지.png"/> | <img width="329" src="/public/images/README/제품%20디테일%20페이지.png"/> |
+| <img width="329" src="https://user-images.githubusercontent.com/118142479/233291307-7e6f173c-1ec9-4c70-a77f-a9979b56e3d7.gif"/> | <img width="329" src="https://user-images.githubusercontent.com/118142479/233291311-c3600d7b-72e0-4559-8704-4c0d87db1998.gif"/> |
 
 ## 주요 기능 📦
 
